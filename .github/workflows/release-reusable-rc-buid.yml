@@ -56,7 +56,7 @@ jobs:
       IMAGE: ${{ steps.set_image.outputs.IMAGE }}
     steps:
       - name: Checkout
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - id: set_image
         run: cat .github/env >> $GITHUB_OUTPUT
@@ -86,7 +86,7 @@ jobs:
           which pgpkms
 
       - name: Checkout sources
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ inputs.release_tag }}
           fetch-depth: 0
@@ -104,7 +104,7 @@ jobs:
           ./.github/scripts/release/build-linux-release.sh ${{ matrix.binaries }} ${{ inputs.package }}
 
       - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@520d128f165991a6c774bcb264f323e3d70747f4 # v2.2.0
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
           subject-path: /artifacts/${{ matrix.binaries }}/${{ matrix.binaries }}
 
@@ -131,7 +131,7 @@ jobs:
           check_gpg  ${{ matrix.binaries }}
 
       - name: Upload ${{ matrix.binaries }} artifacts
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: ${{ matrix.binaries }}_${{ inputs.target }}
           path: /artifacts/${{ matrix.binaries }}
@@ -151,7 +151,7 @@ jobs:
       AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
     steps:
       - name: Checkout sources
-        uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ inputs.release_tag }}
           fetch-depth: 0
@@ -168,12 +168,12 @@ jobs:
         run: echo "ARTIFACTS_PATH=${GITHUB_WORKSPACE}/artifacts/${{ matrix.binaries }}" >> $GITHUB_ENV
 
       - name: Set up Homebrew
-        uses: Homebrew/actions/setup-homebrew@1ccc07ccd54b6048295516a3eb89b192c35057dc # master from 12.09.2024
+        uses: Homebrew/actions/setup-homebrew@9ffcbcc2c89631400988e8d4b1e3ac17dbbe3fe9 # master from 12.09.2024
       - name: Set homebrew binaries location on path
         run: echo "/opt/homebrew/bin" >>  $GITHUB_PATH
 
       - name: Install rust ${{ env.RUST_VERSION }}
-        uses: actions-rust-lang/setup-rust-toolchain@11df97af8e8102fd60b60a77dfbf58d40cd843b8 # v1.10.1
+        uses: actions-rust-lang/setup-rust-toolchain@ecabd13d1c56bd1345c230e542e9144811ad706f # v2.0.0
         with:
           cache: false
           toolchain: ${{ env.RUST_VERSION }}
@@ -219,7 +219,7 @@ jobs:
           ./.github/scripts/release/build-macos-release.sh ${{ matrix.binaries }} ${{ inputs.package }}
 
       - name: Generate artifact attestation
-        uses: actions/attest-build-provenance@520d128f165991a6c774bcb264f323e3d70747f4 # v2.2.0
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
         with:
           subject-path: ${{ env.ARTIFACTS_PATH }}/${{ matrix.binaries }}
 
@@ -246,7 +246,7 @@ jobs:
           check_gpg  ${{ matrix.binaries }}
 
       - name: Upload ${{ matrix.binaries }} artifacts
-        uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: ${{ matrix.binaries }}_${{ inputs.target }}
           path: ${{ env.ARTIFACTS_PATH }}
@@ -258,27 +258,27 @@ jobs:
 
     steps:
     - name: Checkout sources
-      uses: actions/checkout@d632683dd7b4114ad314bca15554477dd762a938 # v4.2.0
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       with:
         ref: ${{ inputs.release_tag }}
         fetch-depth: 0
 
     - name: Download polkadot_x86_64-unknown-linux-gnu artifacts
-      uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+      uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
       with:
         name: polkadot_x86_64-unknown-linux-gnu
         path: target/production
         merge-multiple: true
 
     - name: Download polkadot-execute-worker_x86_64-unknown-linux-gnu artifacts
-      uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+      uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
       with:
         name: polkadot-execute-worker_x86_64-unknown-linux-gnu
         path: target/production
         merge-multiple: true
 
     - name: Download polkadot-prepare-worker_x86_64-unknown-linux-gnu artifacts
-      uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+      uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
       with:
         name: polkadot-prepare-worker_x86_64-unknown-linux-gnu
         path: target/production
@@ -292,12 +292,12 @@ jobs:
         . "${GITHUB_WORKSPACE}"/.github/scripts/release/build-deb.sh ${{ inputs.package }} ${VERSION}
 
     - name: Generate artifact attestation
-      uses: actions/attest-build-provenance@520d128f165991a6c774bcb264f323e3d70747f4 # v2.2.0
+      uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
       with:
         subject-path: target/production/*.deb
 
     - name: Upload ${{inputs.package }} artifacts
-      uses: actions/upload-artifact@5d5d22a31266ced268874388b861e4b58bb5c2f3 # v4.3.1
+      uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
       with:
         name: ${{ inputs.package }}_${{ inputs.target }}
         path: target/production
