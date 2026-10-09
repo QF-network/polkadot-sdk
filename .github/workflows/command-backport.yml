@@ -27,7 +27,7 @@ jobs:
         contains(github.event.pull_request.labels.*.name, 'A4-needs-backport')
       )
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Generate token
         id: generate_token
@@ -37,7 +37,7 @@ jobs:
           private_key: ${{ secrets.CMD_BOT_APP_KEY }}
 
       - name: Create backport pull requests
-        uses: korthout/backport-action@v3
+        uses: korthout/backport-action@v4
         id: backport
         with:
           target_branches: stable2407 stable2409 stable2412 stable2503
@@ -62,7 +62,7 @@ jobs:
 
       - name: Label Backports
         if: ${{ steps.backport.outputs.created_pull_numbers != '' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const pullNumbers = '${{ steps.backport.outputs.created_pull_numbers }}'.split(' ');
@@ -79,7 +79,7 @@ jobs:
 
       - name: Request Review
         if: ${{ steps.backport.outputs.created_pull_numbers != '' }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const pullNumbers = '${{ steps.backport.outputs.created_pull_numbers }}'.split(' ');
